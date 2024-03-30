@@ -11,6 +11,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <avr/pgmspace.h>
+
 
 #define ON      1
 #define OFF     1

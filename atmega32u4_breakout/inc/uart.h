@@ -6,7 +6,8 @@
  */ 
 #include "def.h"
 
-#define UART_CH1        1
+#define UART_CH1        1       // UART
+#define UART_CH2        2       // USB CDC
 
 void uartInit();
 uint8_t uartAvailable(uint8_t ch);

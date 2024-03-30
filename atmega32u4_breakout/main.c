@@ -10,6 +10,7 @@ void mainInit()
 {
     ledInit();
     uartInit();
+    usb_cdc_init();
 }
 
 int main(void)
@@ -22,7 +23,13 @@ int main(void)
         if(uartAvailable(UART_CH1))
         {
             ledToggle(LED_CH1);
-            uartPrintf(UART_CH1, "received : %c \n", uartRead(UART_CH1));
+            uartPrintf(UART_CH1, "CH1 received : %c \n", uartRead(UART_CH1));
+        }
+                
+        if(uartAvailable(UART_CH2))
+        {
+            ledToggle(LED_CH1);
+            uartPrintf(UART_CH2, "CH2 received : %c \n", uartRead(UART_CH2));
         }
     }
 }

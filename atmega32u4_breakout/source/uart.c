@@ -6,6 +6,7 @@
  */ 
 #include "uart.h"
 #include "led.h"
+#include "usb_cdc.h"
 static uint8_t receive_buf = 0;
 
 void uartInit()
@@ -21,12 +22,21 @@ void uartInit()
 uint8_t uartAvailable(uint8_t ch)
 {
     uint8_t ret = 0;
+    int k;
     switch(ch)
     {
         case UART_CH1:
             if(receive_buf)
             {
                 ret = 1;
+            }
+            break;
+        case UART_CH2:
+            k = usb_serial_getchar();
+            if(k >= 0)
+            {
+                ret = 1;
+                receive_buf = k;
             }
             break;
     }
@@ -45,8 +55,16 @@ void uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length)
                     UDR1 = *p_data;
                 p_data++;
                 count++;
-            }                
+            }
             break;
+        case UART_CH2:
+        while(count <length)
+        {
+            usb_serial_putchar(*p_data);
+            p_data++;
+            count++;
+        }
+        break;
     }
 }
 
@@ -66,6 +84,15 @@ void uartPrintf(uint8_t ch, const char *fmt, ...)
                 uartWrite(ch, (uint8_t *)printf_buf,len);
             }
             break;
+        case UART_CH2:
+            va_start(arg,fmt);
+            len = vsnprintf(printf_buf,256,fmt,arg);
+            va_end(arg);
+            if(len>0)
+            {
+                uartWrite(ch, (uint8_t *)printf_buf,len);
+            }
+            break;
     }    
 }
 
@@ -75,6 +102,10 @@ uint8_t uartRead(uint8_t ch)
     switch(ch)
     {
         case UART_CH1:
+            ret = receive_buf;
+            receive_buf = 0;
+        break;
+        case UART_CH2:
             ret = receive_buf;
             receive_buf = 0;
         break;

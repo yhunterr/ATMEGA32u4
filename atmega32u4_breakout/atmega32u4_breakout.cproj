@@ -149,6 +149,9 @@
     <Compile Include="inc\uart.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="inc\usb_cdc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -159,6 +162,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\uart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\usb_cdc.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
