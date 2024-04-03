@@ -43,8 +43,9 @@ uint8_t uartAvailable(uint8_t ch)
     return ret;
 }
 
-void uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length)
+uint8_t uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length)
 {
+    uint8_t ret = 0;
     uint32_t count = 0;
     switch(ch)
     {
@@ -56,6 +57,7 @@ void uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length)
                 p_data++;
                 count++;
             }
+            ret = 1;
             break;
         case UART_CH2:
         while(count <length)
@@ -64,8 +66,10 @@ void uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length)
             p_data++;
             count++;
         }
+        ret = 1;
         break;
     }
+    return ret;
 }
 
 void uartPrintf(uint8_t ch, const char *fmt, ...)
@@ -117,4 +121,19 @@ uint8_t uartRead(uint8_t ch)
 ISR(USART1_RX_vect)
 {
     receive_buf = UDR1;
+}
+
+uint32_t uartVPrintf(uint8_t ch,const char *fmt, va_list arg)
+{
+    uint32_t ret = 0;
+    char print_buf[256];
+
+    int len;
+    len = vsnprintf(print_buf, 256, fmt, arg);
+
+    if(len>0)
+    {
+        ret = uartWrite(ch, (uint8_t *)print_buf, len);
+    }
+    return ret;
 }

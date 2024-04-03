@@ -140,6 +140,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="inc\cli.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="inc\def.h">
       <SubType>compile</SubType>
     </Compile>
@@ -156,6 +159,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\cli.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\led.c">

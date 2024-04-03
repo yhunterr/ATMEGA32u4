@@ -11,6 +11,7 @@
 
 void uartInit();
 uint8_t uartAvailable(uint8_t ch);
-void uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length);
+uint8_t uartWrite(uint8_t ch, uint8_t *p_data, uint32_t length);
 uint8_t uartRead(uint8_t ch);
 void uartPrintf(uint8_t, const char *fmt, ...);
+uint32_t uartVPrintf(uint8_t ch,const char *fmt, va_list arg);

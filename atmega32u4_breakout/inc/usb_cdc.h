@@ -16,8 +16,8 @@
  *  Configurable Options
  *
  **************************************************************************/
-#define VENDOR_ID	    	0x0000
-#define PRODUCT_ID	    	0x0001
+#define VENDOR_ID	    	0x1B4F
+#define PRODUCT_ID	    	0x0000
 #define STR_INFO1	        L"wowon"
 #define STR_INFO2		    L"tistory"
 #define STR_INFO3           L"1203"

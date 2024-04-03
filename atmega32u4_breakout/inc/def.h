@@ -12,7 +12,8 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
-
+#include <string.h>
+#include <stdlib.h>
 
 #define ON      1
 #define OFF     1
