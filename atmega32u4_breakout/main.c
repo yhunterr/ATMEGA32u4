@@ -10,12 +10,15 @@ void mainInit()
 {
     ledInit();
     uartInit();
+    i2cInit();
     usb_cdc_init();
     cliInit();
+    
 }
 
 int main(void)
 {
+
     mainInit();
     ledOn(LED_CH1);
 

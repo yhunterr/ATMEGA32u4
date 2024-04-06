@@ -10,5 +10,6 @@
 #include "led.h"
 #include "cli.h"
 #include "usb_cdc.h"
+#include "i2c.h"
 
 void mainInit();

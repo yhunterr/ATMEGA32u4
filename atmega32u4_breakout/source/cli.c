@@ -6,6 +6,7 @@
  */ 
 #include "cli.h"
 #include "uart.h"
+#include "led.h"
 
 #define CLI_KEY_BACK              0x08
 #define CLI_KEY_DEL               0x7F
@@ -98,10 +99,10 @@ static float    cliArgsGetFloat(uint8_t index);
 static char    *cliArgsGetStr(uint8_t index);
 static bool     cliArgsIsStr(uint8_t index, const char *p_str);
 
-
 void cliShowList(cli_args_t *args);
 void cliClear(cli_args_t *args);
 void cliPort(cli_args_t *args);
+extern void cliI2c(cli_args_t *args);
 
 bool cliInit(void)
 {
@@ -128,6 +129,7 @@ bool cliInit(void)
     cliAdd("help", cliShowList);
     cliAdd("clear", cliClear);
     cliAdd("port",cliPort);
+    cliAdd("i2c",cliI2c);
     return true;
 }
 
@@ -208,6 +210,7 @@ bool cliMain(void)
 
     if (uartAvailable(cli_node.ch) > 0)
     {
+        ledToggle(LED_CH1);
         cliUpdate(&cli_node, uartRead(cli_node.ch));
     }
 
@@ -752,29 +755,49 @@ void cliClear(cli_args_t *args)
 void cliPort(cli_args_t *args)
 {
     bool ret = false;
-    char* port;
+    char *wr_port;
+    char *port;
     uint8_t port_num;
     int    argc = args->argc;
     char **argv = args->argv;
 
     if(argc == 2)
     {
-        port = (char *)argv[0];
-        port_num = (int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0);
+        wr_port = (char *)argv[0];
+        port = (char *)argv[1];
+        if(strcasecmp(wr_port,"R") == 0)
+        {
+            if(strcasecmp(port,"D") == 0)
+            {
+                cliPrintf("PORTD : 0x%x\r\n",PORTD);
+                ret = true;
+            }
+        }            
+    }        
+    else if(argc == 3)
+    {
+        wr_port = (char *)argv[0];
+        port = (char *)argv[1];
+        port_num = (int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0);
         if(port_num > 0xff)
             port_num = 0xff;
-        if(strcasecmp(port,"D") == 0)
+        if(strcasecmp(wr_port,"W") == 0)
         {
-            PORTD = port_num;
+            if(strcasecmp(port,"D") == 0)
+            {
+                PORTD = port_num;
+                ret = true;
+            }
         }
-        ret = true;
+        
     }
     
     
     if(ret == false)
     {
         cliPrintf("-------------------\r\n");
-        cliPrintf("ex)port d 16   => PORTD=16;\r\n");
+        cliPrintf("ex)port r d   => GET PORTD;\r\n");
+        cliPrintf("ex)port w d 16  => PORTD=16;\r\n");
         cliPrintf("port gpio_name number\r\n");
         cliPrintf("-------------------\r\n");
     }
