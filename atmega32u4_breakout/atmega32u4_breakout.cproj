@@ -152,6 +152,12 @@
     <Compile Include="inc\led.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="inc\ssd1306.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="inc\ssd1306_data.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="inc\uart.h">
       <SubType>compile</SubType>
     </Compile>
@@ -171,6 +177,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\led.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\ssd1306.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\uart.c">

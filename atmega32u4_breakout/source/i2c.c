@@ -176,7 +176,36 @@ uint8_t i2c_write2(uint8_t addr, uint8_t data1,uint8_t data2)
     i2c_stop();
     return 1;
 }
-
+uint8_t i2c_write3(uint8_t addr, uint8_t data1,uint8_t data2, uint8_t data3)
+{
+    if(i2c_start() == 0)
+    {
+        i2c_stop();
+        return 0;
+    }
+    if(i2c_write_addr(addr) == 0)
+    {
+        i2c_stop();
+        return 0;
+    }
+    if(i2c_write_data(data1) == 0)
+    {
+        i2c_stop();
+        return 0;
+    }
+    if(i2c_write_data(data2) == 0)
+    {
+        i2c_stop();
+        return 0;
+    }
+   if(i2c_write_data(data3) == 0)
+   {
+       i2c_stop();
+       return 0;
+   }
+    i2c_stop();
+    return 1;
+}
 uint8_t i2c_read1(uint8_t addr, uint8_t data1, uint8_t *save_data1)
 {
     if(i2c_start() == 0)
@@ -212,11 +241,35 @@ uint8_t i2c_read1(uint8_t addr, uint8_t data1, uint8_t *save_data1)
     i2c_stop();
     return 1;
 }
-
+uint8_t i2c_write_multi(uint8_t addr, uint8_t *data, uint8_t cnt)
+{
+    uint8_t loop;
+    if(i2c_start() == 0)
+    {
+        i2c_stop();
+        return 0;
+    }
+    if(i2c_write_addr(addr) == 0)
+    {
+        i2c_stop();
+        return 0;
+    }
+    for(loop = 0; loop < cnt ; loop++)
+    {
+        if(i2c_write_data(data[loop]) == 0)
+        {
+            i2c_stop();
+            return 0;
+        }
+    }
+    i2c_stop();
+    return 1;
+}
 
 void cliI2c(cli_args_t *args)
 {
     bool ret = false;
+    uint8_t result = false;
     int    argc = args->argc;
     char **argv = args->argv;
     int cnt=0;
@@ -246,16 +299,52 @@ void cliI2c(cli_args_t *args)
         }  
         ret = true;
     }
+    else if(argc == 2)
+    {
+        if(strcasecmp(pre_char,"RALL") == 0)
+        {
+            for(cnt=0; cnt <= 255 ; cnt++)
+            {
+                result = i2c_read1((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0),&read_data1);
+                if(result == 1)
+                {
+                    cliPrintf("Read data(0x%02x) : 0x%02x \n",cnt, read_data1);
+                }
+                else if(result ==0)
+                {
+                    cliPrintf("Read data(0x%02x) :i2c read fail \n",cnt);
+                }
+                result = 0;
+            }
+            ret = true;
+        }
+    }
     else if(argc == 3)
     {
+
         if(strcasecmp(pre_char,"R") == 0)
         {
-            i2c_read1((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0),&read_data1);
-            cliPrintf("Read data : 0x%02x \n",read_data1);
+            result = i2c_read1((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0),&read_data1);
+            if(result == 1)
+            {
+                cliPrintf("Read data : 0x%02x \n",read_data1);
+            }
+            else if(result ==0)
+            {
+                cliPrintf("i2c read fail \n");
+            }
         }
         else if(strcasecmp(pre_char,"W") == 0)
         {
-            i2c_write1((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0));
+            result = i2c_write1((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0));
+            if(result == 1)
+            {
+                cliPrintf("i2c write success \n");
+            }
+            else if(result == 0)
+            {
+                cliPrintf("i2c write fail \n");
+            }
         }
         ret = true;       
     }    
@@ -263,7 +352,15 @@ void cliI2c(cli_args_t *args)
     {
         if(strcasecmp(pre_char,"W") == 0)
         {
-            i2c_write2((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[3], (char **)NULL, (int) 0));
+            result = i2c_write2((int)strtoul((const char * ) argv[1], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[2], (char **)NULL, (int) 0),(int)strtoul((const char * ) argv[3], (char **)NULL, (int) 0));
+            if(result == 1)
+            {
+                cliPrintf("i2c write success \n");
+            }
+            else if(result == 0)
+            {
+                cliPrintf("i2c write fail \n");
+            }
         }
         ret = true;
     }
@@ -272,6 +369,7 @@ void cliI2c(cli_args_t *args)
     {
         cliPrintf("------------------- \n");
         cliPrintf("i2c search \n");
+        cliPrintf("i2c rall [addr]=> i2c rall 0x01\n");
         cliPrintf("i2c r [addr] [data2] => i2c r 0x01 0x02 \n");
         cliPrintf("i2c w [addr] [data2] [data3] (max data3) => i2c w 0x01 0x02 0x03\n");
         cliPrintf("------------------- \n");

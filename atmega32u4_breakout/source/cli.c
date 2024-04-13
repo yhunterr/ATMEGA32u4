@@ -103,7 +103,7 @@ void cliShowList(cli_args_t *args);
 void cliClear(cli_args_t *args);
 void cliPort(cli_args_t *args);
 extern void cliI2c(cli_args_t *args);
-
+extern void clissd1306(cli_args_t *args);
 bool cliInit(void)
 {
     cli_node.is_open = true;
@@ -130,6 +130,7 @@ bool cliInit(void)
     cliAdd("clear", cliClear);
     cliAdd("port",cliPort);
     cliAdd("i2c",cliI2c);
+    cliAdd("ssd1306",clissd1306);
     return true;
 }
 

@@ -11,5 +11,6 @@
 #include "cli.h"
 #include "usb_cdc.h"
 #include "i2c.h"
+#include "ssd1306.h"
 
 void mainInit();
