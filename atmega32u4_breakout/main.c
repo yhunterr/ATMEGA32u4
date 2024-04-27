@@ -14,6 +14,7 @@ void mainInit()
     usb_cdc_init();
     cliInit();
     ssd1306_init();
+    intInit();
 }
 
 int main(void)

@@ -104,6 +104,7 @@ void cliClear(cli_args_t *args);
 void cliPort(cli_args_t *args);
 extern void cliI2c(cli_args_t *args);
 extern void clissd1306(cli_args_t *args);
+extern void cliint(cli_args_t *args);
 bool cliInit(void)
 {
     cli_node.is_open = true;
@@ -131,6 +132,7 @@ bool cliInit(void)
     cliAdd("port",cliPort);
     cliAdd("i2c",cliI2c);
     cliAdd("ssd1306",clissd1306);
+    cliAdd("int",cliint);
     return true;
 }
 
@@ -773,6 +775,11 @@ void cliPort(cli_args_t *args)
                 cliPrintf("PORTD : 0x%x\r\n",PORTD);
                 ret = true;
             }
+            if(strcasecmp(port,"E") == 0)
+            {
+                cliPrintf("PORTE : 0x%x\r\n",PORTE);
+                ret = true;
+            }
         }            
     }        
     else if(argc == 3)
@@ -790,7 +797,14 @@ void cliPort(cli_args_t *args)
                 ret = true;
             }
         }
-        
+        if(strcasecmp(wr_port,"W") == 0)
+        {
+            if(strcasecmp(port,"E") == 0)
+            {
+                PORTE = port_num;
+                ret = true;
+            }
+        }
     }
     
     

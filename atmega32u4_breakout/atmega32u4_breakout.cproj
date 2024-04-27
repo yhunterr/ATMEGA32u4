@@ -149,6 +149,9 @@
     <Compile Include="inc\i2c.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="inc\int.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="inc\led.h">
       <SubType>compile</SubType>
     </Compile>
@@ -174,6 +177,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\i2c.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="source\int.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="source\led.c">

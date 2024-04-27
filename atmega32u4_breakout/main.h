@@ -12,5 +12,6 @@
 #include "usb_cdc.h"
 #include "i2c.h"
 #include "ssd1306.h"
+#include "int.h"
 
 void mainInit();
