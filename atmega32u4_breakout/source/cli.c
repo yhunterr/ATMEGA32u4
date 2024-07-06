@@ -780,6 +780,11 @@ void cliPort(cli_args_t *args)
                 cliPrintf("PORTE : 0x%x\r\n",PORTE);
                 ret = true;
             }
+            if(strcasecmp(port,"C") == 0)
+            {
+                cliPrintf("PORTC : 0x%x\r\n",PORTC);
+                ret = true;
+            }
         }            
     }        
     else if(argc == 3)
@@ -802,6 +807,14 @@ void cliPort(cli_args_t *args)
             if(strcasecmp(port,"E") == 0)
             {
                 PORTE = port_num;
+                ret = true;
+            }
+        }
+        if(strcasecmp(wr_port,"W") == 0)
+        {
+            if(strcasecmp(port,"C") == 0)
+            {
+                PORTC = port_num;
                 ret = true;
             }
         }

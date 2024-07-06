@@ -15,6 +15,7 @@ void mainInit()
     cliInit();
     ssd1306_init();
     intInit();
+    btnInit();
 }
 
 int main(void)
@@ -25,6 +26,7 @@ int main(void)
     while (1) 
     {
         cliMain();
+        btn_detect();
     }
 }
 

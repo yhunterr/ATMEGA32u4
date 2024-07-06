@@ -45,7 +45,7 @@ void setup()
     ssd1306_COLUMN = ssd1306_ROW = 0;
     reset_display();              // Clear screen
     sendStrXY("Hello",0,0);
-    sendStrXY("wowon",1,0);
+    //sendStrXY("wowon",1,0);
 }
 
 

@@ -7,7 +7,9 @@
 
 #include "def.h"
 
-#define LED_CH1    1
+#define LED_CH1    1 // PD5
+#define LED_CH2    2 // PC6 
+#define LED_CH3    3 // PC7
 
 void ledInit();
 void ledOn(uint8_t ch);
